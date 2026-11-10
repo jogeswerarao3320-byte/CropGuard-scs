@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CropGuard AI</title>
+<style>
+body {
+  font-family: Arial;
+  background: #eef8ed;
+  color: #174b2b;
+  margin: 0;
+}
+header {
+  background: #176b38;
+  color: white;
+  text-align: center;
+  padding: 25px;
+}
+main {
+  background: white;
+  max-width: 550px;
+  margin: 25px auto;
+  padding: 22px;
+  border-radius: 15px;
+}
+input, select, button {
+  width: 100%;
+  padding: 13px;
+  margin: 12px 0;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+button {
+  background: #176b38;
+  color: white;
+  border: none;
+  font-size: 17px;
+}
+img {
+  max-width: 100%;
+  max-height: 250px;
+  display: block;
+  margin: 15px auto;
+}
+#result {
+  display: none;
+  background: #e7f5e8;
+  padding: 15px;
+  border-radius: 10px;
+}
+</style>
+</head>
+<body>
 
+<header>
+<h1>🌱 CropGuard AI</h1>
+<p>Smart Farming, Healthy Crops, Better Future</p>
+</header>
+
+<main>
+<h2>Plant Disease Assistant</h2>
+<p>Upload a photograph of your plant leaf.</p>
+
+<input type="file" id="photo" accept="image/*">
+<img id="preview" style="display:none">
+
+<label>Select your crop:</label>
+<select id="crop">
+<option value="">Choose crop</option>
+<option>Tomato</option>
+<option>Rice</option>
+<option>Cotton</option>
+<option>Chilli</option>
+<option>Potato</option>
+</select>
+
+<label>Select leaf symptoms:</label>
+<select id="symptom">
+<option value="">Choose symptoms</option>
+<option value="spots">Brown or black spots</option>
+<option value="yellow">Yellow leaves</option>
+<option value="white">White powder on leaves</option>
+<option value="curl">Curled leaves</option>
+</select>
+
+<button onclick="diagnose()">🔍 Check Plant Health</button>
+
+<div id="result"></div>
+</main>
+
+<script>
+const photo = document.getElementById("photo");
+
+photo.addEventListener("change", function() {
+  const file = this.files[0];
+  if (file) {
+    const preview = document.getElementById("preview");
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+  }
+});
+
+function diagnose() {
+  const crop = document.getElementById("crop").value;
+  const symptom = document.getElementById("symptom").value;
+  const result = document.getElementById("result");
+
+  if (!photo.files.length || !crop || !symptom) {
+    alert("Please upload a photo and select crop and symptoms.");
+    return;
+  }
+
+  const data = {
+    spots: ["Possible leaf spot",
+      "Spots may be caused by fungal or bacterial infections.",
+      "Remove severely affected leaves and seek local agricultural advice."],
+    yellow: ["Possible nutrient deficiency or water stress",
+      "Yellowing can have several causes.",
+      "Check soil moisture and drainage. Consider soil testing."],
+    white: ["Possible powdery mildew",
+      "White powder-like patches may indicate fungal infection.",
+      "Improve airflow and consult an agricultural expert."],
+    curl: ["Possible leaf curl problem",
+      "Curling may be related to pests, viruses or environmental stress.",
+      "Inspect for pests and seek agricultural advice."]
+  };
+
+  const report = data[symptom];
+
+  result.style.display = "block";
+  result.innerHTML = `
+    <h2>🌿 Plant Health Report</h2>
+    <p><b>Crop:</b> ${crop}</p>
+    <p><b>Possible issue:</b> ${report[0]}</p>
+    <p><b>Symptoms:</b> ${report[1]}</p>
+    <p><b>Suggested action:</b> ${report[2]}</p>
+    <hr>
+    <b>Note:</b> This is a symptom-based educational prototype,
+    not an AI image diagnosis. Confirm with an agricultural expert.
+  `;
+}
+</script>
+
+</body>
+</html>
